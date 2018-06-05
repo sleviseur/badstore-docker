@@ -1,13 +1,9 @@
 #!/bin/sh
-# Apache HTTP foreground https://github.com/chriswayg/apache-php
 
 apt-get update && apt-get install -y \
     apache2 \
-    mariadb-server \
-    supervisor \ 
-    libclass-dbi-mysql-perl \
-    locales && \
-    apt-get clean && rm -r /var/lib/apt/lists/*
+    libclass-dbi-mysql-perl
+apt-get clean && rm -r /var/lib/apt/lists/*
 
 # Setup Apache
 cp apache2/conf/badstore.conf /etc/apache2/sites-available/
@@ -33,10 +29,7 @@ cp -R apache2/icons/ /data/apache2/htdocs/icons/
 chmod 755 /data/apache2/cgi-bin/*
 ls -la /data/apache2/htdocs/*
 
-# reconfigure LOCALE
-dpkg-reconfigure locales && \
-    locale-gen C.UTF-8 && \
-    /usr/sbin/update-locale LANG=C.UTF-8
+service apache2 restart
 
 # clean packages
 apt-get clean
